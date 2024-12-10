@@ -1,0 +1,4 @@
+- name: Apply Kubernetes resources
+  ansible.builtin.shell: |
+    kubectl apply -f {{ k8s_path }}/deployment.yaml
+    kubectl apply -f {{ k8s_path }}/service.yaml
