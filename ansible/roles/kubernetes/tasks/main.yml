@@ -2,3 +2,6 @@
   ansible.builtin.shell: |
     kubectl apply -f {{ k8s_path }}/deployment.yaml
     kubectl apply -f {{ k8s_path }}/service.yaml
+  environment:
+    KUBECONFIG: "{{ terraform_path }}/kubeconfig.yaml"
+  when: "'terraform_action' in vars and terraform_action == 'apply'"

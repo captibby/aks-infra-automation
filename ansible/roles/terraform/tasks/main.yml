@@ -2,20 +2,22 @@
   ansible.builtin.shell: terraform init -reconfigure
   args:
     chdir: "{{ terraform_path }}"
+  when: "'terraform_action' not in vars or terraform_action == 'apply'"
 
 - name: Run Terraform plan
   ansible.builtin.shell: terraform plan
   args:
     chdir: "{{ terraform_path }}"
+  when: "'terraform_action' not in vars or terraform_action == 'apply'"
 
 - name: Apply Terraform to deploy infrastructure
   ansible.builtin.shell: terraform apply -auto-approve
   args:
     chdir: "{{ terraform_path }}"
-  when: terraform_action is not defined or terraform_action == 'apply'
+  when: "'terraform_action' in vars and terraform_action == 'apply'"
 
 - name: Destroy Terraform infrastructure (if needed)
   ansible.builtin.shell: terraform destroy -auto-approve
   args:
     chdir: "{{ terraform_path }}"
-  when: terraform_action is defined and terraform_action == 'destroy'
+  when: "'terraform_action' in vars and terraform_action == 'destroy'"
